@@ -9,7 +9,7 @@ def add_product():
    product = {}
 
    product['product_id'] = post_data['product_id']
-   product['name'] = post_data['name']
+   product['product_name'] = post_data['product_name']
    product['description'] = post_data['description']
    product['price'] = post_data['price']
    product['active'] = post_data['active']
@@ -38,7 +38,7 @@ def get_product_by_id(product_id):
         if product['product_id'] == int(product_id):
          return jsonify({"message" : "product found", "result": product}), 200
     
-    return jsonify({"message" : "product not found"}), 400
+    return jsonify({"message" : "product not found"}), 404
 
 
 def update_product_by_id(product_id):
@@ -51,7 +51,7 @@ def update_product_by_id(product_id):
         if record['product_id'] == int(product_id):
             product = record
     
-    product['name'] = post_data.get('name', product['name'])
+    product['product_name'] = post_data.get('product_name', product['product_name'])
     product['description'] = post_data.get('description', product['description'])
     product['price'] = post_data.get('price', product['price'])
    
@@ -73,5 +73,6 @@ def delete_by_id(product_id):
     for record in product_records:
         if record['product_id'] == int(product_id):
             product_records.remove(record)
-    return jsonify({'message' : "product deleted"}), 200
+        return jsonify({'message' : "Product deleted", "result": record }), 200
+    return jsonify({"message" : "product not found"}), 404
     
